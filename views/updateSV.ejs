@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        *p{
+            text-align: center;
+            margin: auto;
+        }
+        h5{
+            padding-bottom: 50px;
+        }
+        .textcenter{
+            text-align: center;
+        }
+        tr{
+            padding-bottom: 10px;
+        }
+        td{
+            margin-left: 10px;
+            margin-top: 20px;
+        }
+        .frameDSTK{
+            height: 700px;
+            width: 1300px;
+            background-color: #E1EDED;
+            margin: 100px auto 16px;
+            border: 2px black solid;
+        }
+        .frameAnh{
+            height: 695px;
+            width: 70px;
+            float: left;
+
+        }
+        .frameQL{
+            height: 695px;
+            width: 1225px;
+            float: left;
+
+        }
+        .buttonaddTK{
+            width: 300px;
+            height: 40px;
+            background-color: #005cbf;
+            text-align: center;
+            color: white;
+            float: right;
+            margin-right: 170px;
+
+        }
+        .frameTable{
+            margin-left: 100px;
+            width:800px ;
+            height: auto;
+            float: left;
+        }
+        .textadd{
+            width: 360px;
+            height: 30px;
+        }
+        .cach{
+            margin-left: 160px;
+        }
+        .buttonThem{
+            float: right;
+            background-color: red;
+            color: white;
+            margin-right: 140px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="frameDSTK">
+        <div class="frameQL">
+            <h1>Thông tin Sinh Viên </h1>
+            <a href="DanhSachSV"><button class="buttonaddTK">Danh sách học sinh</button></a><br/><br/>
+            <div class="frameTable ">
+                <form class="form-group" method="post" action="">
+                    <h3 class="textcenter">Sửa sinh viên</h3>
+
+                    <table style="width:75%;height:400px" class="cach">
+                        <%data.forEach(function(i){%>
+                        <tr>
+                            <td>Mã Sinh Viên : </td>
+                            <td><input type="text" class="textadd" name="txtma"  value="<%=i.ID%>"> </td>
+                        </tr>
+                        <tr>
+                            <td>Tên Sinh Viên : </td>
+                            <td><input type="text" class="textadd" name="txtTen" autofocus value="<%=i.Ten%>"></td>
+                        </tr>
+                        <tr>
+                            <td>Ngày Sinh : </td>
+                            <td>
+                                <input type="text" class="textadd2" name="txtngaySinh" value="<%=i.NgaySinh%>">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Avatar </td>
+                            <td><input type="file" class="textadd" name="txtAvata" value="<%=i.avatar%>"></td>
+                        </tr>
+                        <%})%>
+                    </table>
+                    <input class="buttonThem" type="submit" value="Sửa Sinh Viên">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
