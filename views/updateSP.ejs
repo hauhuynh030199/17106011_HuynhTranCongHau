@@ -80,35 +80,32 @@
 <div class="container">
     <div class="frameDSTK">
         <div class="frameQL">
-            <h1>Thông tin Sinh Viên </h1>
-            <a href="DanhSachSV"><button class="buttonaddTK">Danh sách học sinh</button></a><br/><br/>
+            <h1>Thông tin San Pham </h1>
+            <a href="DanhSachSP"><button class="buttonaddTK">Danh sách san pham</button></a><br/><br/>
             <div class="frameTable ">
                 <form class="form-group" method="post" action="">
-                    <h3 class="textcenter">Sửa sinh viên</h3>
+                    <h3 class="textcenter">Sửa san pham</h3>
 
                     <table style="width:75%;height:400px" class="cach">
                         <%data.forEach(function(i){%>
                         <tr>
-                            <td>Mã Sinh Viên : </td>
-                            <td><input type="text" class="textadd" name="txtma"  value="<%=i.ID%>"> </td>
+                            <td>Ma SP: </td>
+                            <td><input type="text" class="textadd" name="txtma"  value="<%=i.maSP%>"> </td>
                         </tr>
                         <tr>
-                            <td>Tên Sinh Viên : </td>
-                            <td><input type="text" class="textadd" name="txtTen" autofocus value="<%=i.Ten%>"></td>
+                            <td>Ten SP : </td>
+                            <td><input type="text" class="textadd" name="txtTen" autofocus value="<%=i.TenSP%>"></td>
                         </tr>
                         <tr>
-                            <td>Ngày Sinh : </td>
+                            <td>so luong : </td>
                             <td>
-                                <input type="text" class="textadd2" name="txtngaySinh" value="<%=i.NgaySinh%>">
+                                <input type="text" class="textadd2" name="txtsoluong" value="<%=i.soluong%>">
                             </td>
                         </tr>
-                        <tr>
-                            <td>Avatar </td>
-                            <td><input type="file" class="textadd" name="txtAvata" value="<%=i.avatar%>"></td>
-                        </tr>
+
                         <%})%>
                     </table>
-                    <input class="buttonThem" type="submit" value="Sửa Sinh Viên">
+                    <input class="buttonThem" type="submit" value="Sua san pham">
                 </form>
             </div>
         </div>
