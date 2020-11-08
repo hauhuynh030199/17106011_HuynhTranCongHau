@@ -2,17 +2,6 @@ const express = require('express');
 const app = express();
 const port = 3000;
 var AWS = require('aws-sdk');
-var multer = require('multer');
-var storage = multer.diskStorage({
-    destination : function (req,file,cb){
-        cb(null,'/uploads');
-    },
-    filename: function (req,file,cb){
-        cb(null,file.originalname);
-    }
-})
-
-var upload = multer({storage:storage})
 app.set("view engine","ejs");
 app.set("views","./views");
 app.use(express.urlencoded({
@@ -20,33 +9,32 @@ app.use(express.urlencoded({
 }));
 app.use(express.json());
 AWS.config.update({
-    region: "ap-southeast-1",
-    endpoint: "http://dynamodb.ap-southeast-1.amazonaws.com",
+    region:"us-east-2",
+    enpoint:"https://dynamodb.us-east-2.amazonaws.com",
+    accessKeyId:"AKIA3AH4OYVFDHHINVD7",
+    secretAccessKey:"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"
 
 });
 var dynamodb = new AWS.DynamoDB();
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 
-/***************************************  Thêm Sinh Viên */
-let save = function (id,msv,ten,ngaysinh,avatar) {
+let save = function (maSP,tenSP,SL) {
 
     var input = {
-        ID: id,
-        MaSinhVien:msv,
-        Ten:ten,
-        NgaySinh:ngaysinh,
-        avatar:avatar
+        maSP: maSP,
+        TenSP:tenSP,
+        soluong:SL,
     };
     var params = {
-        TableName: "Student",
+        TableName: "Sanpham",
         Item: input
     };
     docClient.put(params, function (err, data) {
         if (err) {
-            console.log("Student::save::error - " + JSON.stringify(err, null, 2));
+            console.log("SanPham::save::error - " + JSON.stringify(err, null, 2));
         } else {
-            console.log("Student::save::success" );
+            console.log("SanPham::save::success" );
         }
     });
 }
@@ -54,19 +42,17 @@ app.get('/', (req, res) => {
     res.render('index.ejs');
 });
 app.post('/', (req, res) => {
-    var id = Math.floor(Math.random() * 100) + 1;
-    var msv = req.body.txtma;
-    var ten = req.body.txtTen;
-    var ngaysinh = req.body.txtngaySinh;
-    var avatar = req.body.txtAvata;
-    save(id,msv,ten,ngaysinh,avatar);
-    res.redirect('/DanhSachSV');
+    var msp = req.body.txtma;
+    console.log(msp);
+    var tensp = req.body.txtTen;
+    var sl = req.body.txtSL;
+    save(msp,tensp,sl);
+    res.redirect('/DanhSachSP');
 })
 
-/***************************************  Load Sinh Viên */
 function findUser (res) {
     let params = {
-        TableName: "Student"
+        TableName: "Sanpham"
     };
     docClient.scan(params, function (err, data) {
         if (err) {
@@ -75,57 +61,28 @@ function findUser (res) {
             if(data.Items.length === 0){
                 res.end(JSON.stringify({message :'Table rỗng '}));
             }
-            res.render('DanhSachSV.ejs',{
+            res.render('DanhSachSP.ejs',{
                 data : data.Items
             });
         }
     });
 
 }
-/***************************************  Xóa Sinh Viên */
-function deleteSV(res,id){
-    var check = !Number.isNaN(id) ? parseInt(id) : id;
-    var params = {
-        TableName:"Student",
-        Key:{
-            "ID": check
-        },
-        ConditionExpression:"ID = :r",
-        ExpressionAttributeValues: {
-            ":r": check
-        }
-    };
 
-    console.log("Attempting a conditional delete...");
-    docClient.delete(params, function(err, data) {
-        if (err) {
-            console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
-        } else {
-            console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
-            res.redirect('/DanhSachSV');
-        }
-    });
-}
-
-app.get('/DanhSachSV', (req, res) => {
+app.get('/DanhSachSP', (req, res) => {
     findUser(res)
 });
-app.post('/DanhSachSV', (req, res) => {
-    deleteSV(res,req.body.ID);
-});
-/***************************************  Sửa Sinh Viên */
-function updateUser(res,id,ten,ngaySinh,avatar){
-    var check = !Number.isNaN(id) ? parseInt(id) : id;
+
+function updateUser(res,id,ten,sl){
     var params = {
-        TableName:"Student",
+        TableName:"Sanpham",
         Key:{
-            "ID": check
+            "maSP": id
         },
-        UpdateExpression:"set Ten =:ten, NgaySinh =:ns , avatar =:a ",
+        UpdateExpression:"set TenSP =:ten, soluong =:ns  ",
         ExpressionAttributeValues: {
             ":ten": ten,
-            ":ns" : ngaySinh,
-            ":a" : avatar
+            ":ns" : sl
         }
     };
     docClient.update(params, function(err, data) {
@@ -133,22 +90,21 @@ function updateUser(res,id,ten,ngaySinh,avatar){
             console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
         } else {
             console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
-            res.redirect('/DanhSachSV');
+            res.redirect('/DanhSachSP');
         }
     });
 
 }
-/***************************************  tìm 1 Sinh Viên */
+
 function find1User (res , id) {
-    var check = !Number.isNaN(id) ? parseInt(id) : id;
     let params = {
-        TableName: "Student",
+        TableName: "Sanpham",
         KeyConditionExpression: "#ID = :ms",
         ExpressionAttributeNames:{
-            "#ID": "ID"
+            "#ID": "maSP"
         },
         ExpressionAttributeValues: {
-            ":ms": check
+            ":ms": id
         }
     };
     docClient.query(params, function (err, data) {
@@ -159,21 +115,21 @@ function find1User (res , id) {
                 res.end(JSON.stringify({message :'Table rỗng '}));
             }
             console.log(data.Items)
-            res.render('updateSV.ejs',{
+            res.render('updateSP.ejs',{
                 data : data.Items
             });
         }
     });
 
 }
-app.get('/SuaSV',upload.single("txtAvata"), (req, res) => {
-    console.log(req.file);
+app.get('/SuaSV', (req, res) => {
+    console.log('**************');
+    console.log(' sadasd'+req.query.IDupdate);
     find1User(res,req.query.IDupdate);
 });
 app.post('/SuaSV', (req, res) => {
     console.log('**************');
-    console.log(parseInt(req.body.txtma));
-    updateUser(res,parseInt(req.body.txtma),req.body.txtTen,req.body.txtngaySinh,req.body.txtAvata);
+    updateUser(res,req.body.txtma,req.body.txtTen,req.body.txtsoluong);
 });
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
