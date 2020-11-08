@@ -82,33 +82,24 @@
             <img class="frameAnh" src="img/menu.png">
         </div>
         <div class="frameQL">
-             <h1>Thông tin Sinh Viên </h1>
-            <a href="/"><button class="buttonaddTK">Thêm tài khoản</button></a><br/><br/>
+             <h1>Thông tin San Pham </h1>
+            <a href="/"><button class="buttonaddTK">Thêm San Pham</button></a><br/><br/>
             <div class="frameTable father">
                 <table style="width:120%;height:100px" class="tableqltk">
                     <tr class="tableqltk">
-                        <td class="tableqltk">ID</td>
-                        <td class="tableqltk">Mã Sinh Viên</td>
+                        <td class="tableqltk">Ma SP</td>
                         <td class="tableqltk">Tên</td>
-                        <td class="tableqltk">Ngày Sinh</td>
-                        <td class="tableqltk">Avatar</td>
+                        <td class="tableqltk">So Luong</td>
                         <td class="tableqltk">Chỉnh Sửa Thông Tin</td>
                     </tr>
                     <% data.forEach(function(i){%>
                     <tr class="tableqltk">
-                        <td class="tableqltk"><%=i.ID%></td>
-                        <td class="tableqltk"><%=i.MaSinhVien%></td>
-                        <td class="tableqltk"><%=i.Ten%></td>
-                        <td class="tableqltk"><%=i.NgaySinh%></td>
-                        <td class="tableqltk"><%=i.avatar%></td>
+                        <td class="tableqltk"><%=i.maSP%></td>
+                        <td class="tableqltk"><%=i.TenSP%></td>
+                        <td class="tableqltk"><%=i.soluong%></td>
                         <td>
-                            <form method="post" action="" class="t">
-                                <input type="hidden" name="ID" value="<%=i.ID%>">
-                                <button>Xóa</button>
-                            </form>
-
                             <form method="get" action="/SuaSV" class="t">
-                                <input type="hidden" name="IDupdate" value="<%=i.ID%>">
+                                <input type="hidden" name="IDupdate" value="<%=i.maSP%>">
                                 <button>Sửa</button>
                             </form>
 
