@@ -11,8 +11,6 @@ app.use(express.json());
 AWS.config.update({
     region:"us-east-2",
     enpoint:"https://dynamodb.us-east-2.amazonaws.com",
-    accessKeyId:"AKIA3AH4OYVFDHHINVD7",
-    secretAccessKey:"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"
 
 });
 var dynamodb = new AWS.DynamoDB();
